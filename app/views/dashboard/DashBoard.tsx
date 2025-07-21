@@ -1,12 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const glass = "backdrop-blur-lg bg-white/10 border border-blue-400/20 shadow-2xl";
-const glowBtn = "bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white font-semibold rounded-full px-7 py-3 shadow-lg hover:shadow-blue-400/50 transition-all duration-200 ring-2 ring-blue-400/40 ring-offset-2 ring-offset-[#0A0F1F]";
+const glowBtn = "bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white font-semibold rounded-full px-5 md:px-7 py-2.5 md:py-3 text-sm md:text-base shadow-lg hover:shadow-blue-400/50 transition-all duration-200 ring-2 ring-blue-400/40 ring-offset-2 ring-offset-[#0A0F1F]";
 
 const letterAnimation = {
   hidden: { opacity: 0, y: 10 },
@@ -20,6 +20,7 @@ const letterAnimation = {
 export default function Home() {
   const controls = useAnimation();
   const router = useRouter();
+
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     const sequence = async () => {
@@ -37,7 +38,7 @@ export default function Home() {
     };
   }, [controls]);
 
-    return (
+  return (
     <>
       <div className="fixed inset-0 -z-10">
         <motion.div
@@ -59,19 +60,22 @@ export default function Home() {
           className="absolute left-[30vw] bottom-[-10vh] w-[40vw] h-[20vw] bg-blue-900/30 rounded-full blur-2xl"
         />
       </div>
+
       <motion.main
         initial={{ scale: 0.97, opacity: 0.7 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 80 }}
         className="min-h-screen bg-[#0A0F1F] text-white relative bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]"
       >
+
+        {/* NAVBAR */}
         <motion.nav
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="w-full flex items-center justify-between px-8 py-3 shadow-2xl mb-2 bg-transparent pt-6"
+          className="w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-8 py-4 shadow-2xl mb-2 bg-transparent pt-6 gap-4"
         >
-      <div className="flex items-center h-16">
+         <div className="flex items-center h-16">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-80 w-auto" viewBox="0 0 1080 1080" preserveAspectRatio="xMidYMid meet">
           <path fill="white" d="M219 438h8l5 5 1 3 10-1 5 3 6 14 5 14v2h12l2 2-1 4-1 1h-9l2 4 13 2 5 5 1 5v25l-2 4-5-1-1-1-1-29-23-1v36h31l6 2 4 4v44l-4 5-2 1h-35v46l24-1v-37l2-3 5 1 1 3v33l-2 7-3 3-3 1H78l-5-3-2-3V490l3-8 6-4 35-1 69-26Zm2 7-70 26-40 15-8 3v1h19l69-26 35-13-1-6Zm17 8-72 27-24 9v1h114l-3-10-10-26ZM82 485l-3 3v3l9-3 5-2v-1Zm-3 13-1 1v135l2 2h164v-46l-30-1-9-5-5-6-2-6v-20l4-8 7-6 9-3 26-1v-36Zm137 44-6 3-5 6-1 3v16l4 8 8 5h68l1-1v-39l-1-1Z"/>
           <path fill="white" d="M527 472h13l3 3 1 7 1 28 8-7 10-3h12l10 3 8 6 6 7 3 9 1 6v49l-2 4-2 1h-11l-5-2-1-2-1-46-3-10-4-4-3-1h-12l-8 4-4 5-2 7-2 46-3 3h-13l-4-3-1-14v-90l3-5Z"/>
@@ -111,41 +115,45 @@ export default function Home() {
           <path fill="white" d="M451 635h13l2 1v5h-15l-1-5Z"/>
         </svg>
     </div>
+
           <motion.button
-            whileHover={{ scale: 1.08, boxShadow: "0 0 16px #60a5fa" }}
-            whileTap={{ scale: 0.97 }}
-            className={glowBtn}
-            onClick={() => router.push('/login')}
-          >
-            Login
-          </motion.button>
+  whileHover={{ scale: 1.08, boxShadow: "0 0 16px #60a5fa" }}
+  whileTap={{ scale: 0.97 }}
+  className={`${glowBtn} mt-4 md:mt-0`}
+  onClick={() => router.push('/login')}
+>
+  Login
+</motion.button>
+
         </motion.nav>
 
-        <section className="pt-16 px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        {/* HERO SECTION */}
+        <section className="pt-10 md:pt-16 px-4 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="space-y-8"
+            className="space-y-6 md:space-y-8"
           >
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-[#F1F5F9] drop-shadow-xl">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-[#F1F5F9] drop-shadow-xl">
               Trusted by Users.<br />
               <span className="text-blue-400">Powered by Security.</span>
             </h1>
-            <p className="text-lg text-[#CBD5E1]">
+            <p className="text-base md:text-lg text-[#CBD5E1]">
               Experience fast, reliable, and secure digital payments with futuristic security.
             </p>
             <motion.button
-              whileHover={{ scale: 1.07, boxShadow: "0 0 24px #60a5fa" }}
-              whileTap={{ scale: 0.96 }}
-              className={glowBtn + " text-lg"}
-              onClick={() => router.push('/login')}
-            >
-              Get Started
-            </motion.button>
+  whileHover={{ scale: 1.07, boxShadow: "0 0 24px #60a5fa" }}
+  whileTap={{ scale: 0.96 }}
+  className={`${glowBtn} text-base mx-auto flex items-center md:mx-0 mt-6 md:mt-0`}
+  onClick={() => router.push('/login')}
+>
+  Get Started
+</motion.button>
+
           </motion.div>
 
-          <div className="flex justify-center items-center w-full h-ful">
+          <div className="flex justify-center items-center w-full">
             <motion.div
               initial={{ opacity: 1, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: [1, 1.08, 1] }}
@@ -161,52 +169,60 @@ export default function Home() {
                 alt="Illustration representing payment services"
                 width={500}
                 height={370}
-                className="max-w-full h-auto rounded-2xl"
+                className="w-full h-auto rounded-2xl"
               />
             </motion.div>
           </div>
         </section>
 
-        <section className="mt-16 px-6 flex justify-center">
-          <div className="w-full overflow-hidden">
-            <motion.div
-              className="flex gap-8 w-max pb-6"
-              animate={{ x: [0, -1200] }}
-              transition={{ repeat: Infinity, repeatType: 'loop', duration: 18, ease: 'linear' }}
-              style={{ willChange: 'transform' }}
-            >
-              {[
-                { icon: "🏠", label: "Home" },
-                { icon: "🔁", label: "P2P Transaction" },
-                { icon: "➕", label: "Add Money" },
-                { icon: "📄", label: "Transaction History" },
-                { icon: "🔒", label: "Security" },
-                { icon: "🏠", label: "Home" },
-                { icon: "🔁", label: "P2P Transaction" },
-                { icon: "➕", label: "Add Money" },
-                { icon: "📄", label: "Transaction History" },
-                { icon: "🔒", label: "Security" },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: (index % 6) * 0.18, type: "spring", stiffness: 80, damping: 12 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.13, boxShadow: "0 0 40px #60a5fa" }}
-                  whileTap={{ scale: 0.96 }}
-                  className={`min-w-[200px] flex flex-col items-center justify-center p-6 rounded-2xl border border-blue-400/20 shadow-lg transition-transform cursor-pointer bg-transparent`}
-                  style={{ boxShadow: "0 4px 32px 0 rgba(30,64,175,0.25)" }}
-                >
-                  <span className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-700/30 shadow-lg text-3xl text-blue-300 mb-2">{item.icon}</span>
-                  <span className="text-white font-semibold">{item.label}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-        
-        <div className="flex justify-center items-center w-full h-auto mt-16 mb-16">
+       {/* FEATURE SCROLLER */}
+<section className="mt-16 px-4 sm:px-6 flex justify-center">
+  <div className="w-full overflow-hidden">
+    <motion.div
+      className="flex gap-6 w-max"
+      animate={{ x: ["0%", "-50%"] }}
+      transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+      style={{ willChange: "transform" }}
+    >
+      {/* Duplicate the items once for seamless loop */}
+      {[
+        { icon: "🏠", label: "Home" },
+        { icon: "🔁", label: "P2P Transaction" },
+        { icon: "➕", label: "Add Money" },
+        { icon: "📄", label: "Transaction History" },
+        { icon: "🔒", label: "Security" },
+      ].flatMap((item, i, arr) =>
+        [item, ...arr].map((subItem, index) => (
+          <motion.div
+            key={`${i}-${index}`}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              delay: (index % arr.length) * 0.18,
+              type: "spring",
+              stiffness: 80,
+              damping: 12,
+            }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.13, boxShadow: "0 0 40px #60a5fa" }}
+            whileTap={{ scale: 0.96 }}
+            className="min-w-[180px] snap-start flex flex-col items-center justify-center p-6 rounded-2xl border border-blue-400/20 shadow-lg transition-transform cursor-pointer bg-transparent"
+            style={{ boxShadow: "0 4px 32px 0 rgba(30,64,175,0.25)" }}
+          >
+            <span className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-700/30 shadow-lg text-3xl text-blue-300 mb-2">
+              {subItem.icon}
+            </span>
+            <span className="text-white font-semibold">{subItem.label}</span>
+          </motion.div>
+        ))
+      )}
+    </motion.div>
+  </div>
+</section>
+
+
+        {/* IMAGE BANNER */}
+         <div className="flex justify-center items-center w-full h-auto mt-16 mb-16">
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -222,22 +238,23 @@ export default function Home() {
               />
             </motion.div>
           </div>
-          
-      <section className="max-w-3xl mx-auto mt-12 mb-20 px-4">
-        <h2 className="text-3xl font-bold mb-6 text-center text-blue-300">Frequently Asked Questions</h2>
-        <FAQAccordion />
-      </section>
-      <footer className="text-center text-gray-400 text-sm py-4">
-        <p>© 2025 EchoPay. All rights reserved.</p>
-        <p>Powered by EchoPay</p>
-      </footer>
+        {/* FAQ SECTION */}
+        <section className="max-w-3xl mx-auto mt-12 mb-20 px-4 sm:px-6">
+          <h2 className="text-3xl font-bold mb-6 text-center text-blue-300">Frequently Asked Questions</h2>
+          <FAQAccordion />
+        </section>
+
+        {/* FOOTER */}
+        <footer className="text-center text-gray-400 text-sm py-4 px-4">
+          <p>© 2025 EchoPay. All rights reserved.</p>
+          <p>Powered by EchoPay</p>
+        </footer>
       </motion.main>
     </>
   );
 }
 
-import { useState } from "react";
-
+// FAQ COMPONENT
 const faqData = [
   {
     question: "What is EchoPay?",
