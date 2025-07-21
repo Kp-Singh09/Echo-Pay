@@ -171,23 +171,23 @@ export default function Home() {
           </div>
         </section>
         
-        <div className="flex justify-center items-center w-full h-full mt-16 mb-16">
+        <div className="flex justify-center items-center w-full h-auto mt-16 mb-16">
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               whileHover={{ scale: 1.02, boxShadow: "0 0 48px #60a5fa" }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.5}}
-              className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl w-full max-w-6xl"
+              className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl w-auto max-w-6xl"
             >
               <img
                 src="/paytm-2.jpg"
                 alt="Illustration representing payment services"
-                className="rounded-2xl w-full h-auto"
+                className="rounded-2xl w-auto h-auto max-h-128"
               />
             </motion.div>
           </div>
-          </motion.main>
+          
       <section className="max-w-3xl mx-auto mt-12 mb-20 px-4">
         <h2 className="text-3xl font-bold mb-6 text-center text-blue-300">Frequently Asked Questions</h2>
         <FAQAccordion />
@@ -196,7 +196,7 @@ export default function Home() {
         <p>© 2025 EchoPay. All rights reserved.</p>
         <p>Powered by EchoPay</p>
       </footer>
-
+      </motion.main>
     </>
   );
 }
@@ -243,13 +243,13 @@ function FAQAccordion() {
         <div key={idx}>
           <button
             onClick={() => toggle(idx)}
-            className={`w-full text-left px-5 py-4 rounded-lg border border-blue-400/40 text-lg font-semibold focus:outline-none flex justify-between items-center transition-all duration-200 ${openIndex === idx ? 'ring-2 ring-blue-400' : ''}`}
+            className={`w-full bg-[#0f172a] text-left px-5 py-4 rounded-lg border border-blue-400/40 text-lg font-semibold focus:outline-none flex justify-between items-center transition-all duration-200 ${openIndex === idx ? 'ring-2 ring-blue-400' : ''}`}
           >
             <span>{item.question}</span>
             <span className="ml-4 text-blue-300">{openIndex === idx ? '▲' : '▼'}</span>
           </button>
           {openIndex === idx && (
-            <div className="px-5 py-3 text-[#cbd5e1] border-l-4 border-blue-400/40 rounded-b-lg animate-fade-in">
+            <div className="px-5 py-3 bg-[#0f172a] text-[#cbd5e1] border-l-4 border-blue-400/40 rounded-b-lg animate-fade-in">
               {item.answer}
             </div>
           )}
