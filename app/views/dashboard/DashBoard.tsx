@@ -176,12 +176,12 @@ export default function Home() {
         </section>
 
        {/* FEATURE SCROLLER */}
-<section className="mt-16 px-4 sm:px-6 flex justify-center">
-  <div className="w-full overflow-hidden">
+<section className="mt-16 px-4 sm:px-6 flex justify-center h-auto w-auto">
+  <div className="w-full h-auto overflow-hidden">
     <motion.div
-      className="flex gap-6 w-max"
+      className="flex gap-12 w-max h-auto"
       animate={{ x: ["0%", "-50%"] }}
-      transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+      transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
       style={{ willChange: "transform" }}
     >
       {/* Duplicate the items once for seamless loop */}
@@ -195,21 +195,21 @@ export default function Home() {
         [item, ...arr].map((subItem, index) => (
           <motion.div
             key={`${i}-${index}`}
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            initial={{ opacity: 0, y: 30, scale: 1.5 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
-              delay: (index % arr.length) * 0.18,
+              delay: (index % arr.length) * 0.01,
               type: "spring",
               stiffness: 80,
               damping: 12,
             }}
             viewport={{ once: true }}
-            whileHover={{ scale: 1.13, boxShadow: "0 0 40px #60a5fa" }}
+            whileHover={{ scale: 1.2, boxShadow: "0 0 40px #60a5fa" }}
             whileTap={{ scale: 0.96 }}
-            className="min-w-[180px] snap-start flex flex-col items-center justify-center p-6 rounded-2xl border border-blue-400/20 shadow-lg transition-transform cursor-pointer bg-transparent"
-            style={{ boxShadow: "0 4px 32px 0 rgba(30,64,175,0.25)" }}
+            className="min-w-[100px] bg-[#0f172a] snap-start flex flex-col items-center justify-center p-6 rounded-2xl border border-blue-400/20 shadow-lg transition-transform cursor-pointer "
+            style={{ boxShadow: "4px 4px 32px 4px rgba(30,64,175,0.25)" }}
           >
-            <span className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-700/30 shadow-lg text-3xl text-blue-300 mb-2">
+            <span className="flex  items-center justify-center w-12 h-12 rounded-full bg-blue-700/30 shadow-lg text-3xl text-blue-300 mb-2">
               {subItem.icon}
             </span>
             <span className="text-white font-semibold">{subItem.label}</span>
