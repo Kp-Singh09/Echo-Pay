@@ -85,6 +85,8 @@ useEffect(() => {
       <motion.main initial={{ scale: 0.97, opacity: 0.7 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, type: "spring", stiffness: 80 }} className="min-h-screen pt-28 bg-[#0A0F1F] text-white relative bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]">
         
         {/* NAVBAR */}
+
+        
         <motion.nav
   initial={{ y: -80, opacity: 0 }}
   animate={{ y: 0, opacity: 1 }}
@@ -160,7 +162,7 @@ useEffect(() => {
             <motion.button whileHover={{ scale: 1.07, boxShadow: "0 0 24px #60a5fa" }} whileTap={{ scale: 0.96 }} className={`${glowBtn} text-base mx-auto flex items-center md:mx-0 mt-6 md:mt-0`} onClick={() => router.push('/login')}>Get Started</motion.button>
           </motion.div>
           <div className="flex justify-center items-center w-full">
-            <motion.div initial={{ opacity: 1, y: 50, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: [1, 1.08, 1] }} transition={{ opacity: { duration: 0.6 }, y: { duration: 0.6 }, scale: { duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" } }} className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl max-w-xs w-full">
+            <motion.div initial={{ opacity: 1, y: 50, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: [1, 1.08, 1] }} transition={{ opacity: { duration: 0.6 }, y: { duration: 0.6 }, scale: { duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" } }} whileHover={{ scale: 1.07, boxShadow: "0 0 48px #60a5fa" }} className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl max-w-xs w-full">
               <Image src="/paytm-1.png" alt="Illustration representing payment services" width={500} height={370} className="w-full h-auto rounded-2xl" />
             </motion.div>
           </div>
@@ -169,7 +171,7 @@ useEffect(() => {
 
 
 <section className="mt-16 px-4 sm:px-6 flex justify-center">
-  <div className="w-full max-h-[240px] overflow-hidden pt-4"> {/* extra top padding */}
+  <div className="w-full max-h-[240px] overflow-hidden pt-4"> 
     <motion.div
       className="flex gap-10 w-max pb-4"
       style={{ x }}

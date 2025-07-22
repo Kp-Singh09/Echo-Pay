@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
         // Connect to the database
         await dbConnect();
 
-        switch (type) {
-            case 'account-details':{
+    switch (type) {
+        case 'account-details':{
                 const { id } = dataBody;
                 const user = await User.findOne({ _id: id });
                 if (!user) {    
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
 
 
-            case 'transfer':{
+        case 'transfer':{
                 const { amount, bank, id } = dataBody;
                 const user = await User.findOne({ _id: id });
                 if (!user) {
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
 
 
-            case 'p2p':{
+        case 'p2p':{
                 const { amount, phoneNumber, id } = dataBody;
                 const user = await User.findOne({ _id: id });
                 if (!user) {
@@ -138,8 +138,100 @@ export async function POST(req: NextRequest) {
                 return NextResponse.json(responseData);
                 break;
             }
+            
+        
+        
+            case 'p2p-sent-summary': {
+    const { id } = dataBody;
+    const user = await User.findOne({ _id: id });
+    if (!user) {
+        responseData = { error: 'User not found', status: 400 };
+        return NextResponse.json(responseData);
+    }
 
-            case 'transactions':{
+    // Aggregate all successful transfers sent by this user
+    const summary = await P2PTransfer.aggregate([
+        { $match: { sender: user.number, status: "success" } },
+        {
+            $group: {
+                _id: "$receiver",
+                totalAmount: { $sum: "$amount" },
+            }
+        },
+        {
+            $project: {
+                receiver: "$_id",
+                totalAmount: 1,
+                _id: 0
+            }
+        }
+    ]);
+
+    responseData = {
+        message: "Sent summary generated",
+        status: 200,
+        data: summary
+    };
+    return NextResponse.json(responseData);
+    }
+
+
+
+
+
+        case 'balance-history': {
+    const { id } = dataBody;
+    const user = await User.findOne({ _id: id });
+    if (!user) {
+        responseData = { error: 'User not found', status: 400 };
+        return NextResponse.json(responseData);
+    }
+
+    const onRamps = await OnRampTransactions.find({ userId: id, status: "success" });
+    const p2ps = await P2PTransfer.find({ 
+        $or: [{ sender: user.number }, { receiver: user.number }],
+        status: "success",
+    });
+
+    let events: { time: Date, delta: number }[] = [];
+
+    for (let tx of onRamps) {
+        events.push({ time: new Date(tx.timeStamp), delta: tx.amount });
+    }
+
+    for (let tx of p2ps) {
+        if (tx.sender === user.number) {
+            events.push({ time: new Date(tx.timeStamp), delta: -tx.amount });
+        } else {
+            events.push({ time: new Date(tx.timeStamp), delta: tx.amount });
+        }
+    }
+
+    events.sort((a, b) => a.time.getTime() - b.time.getTime());
+
+    let history = [];
+    let runningBalance = 0;
+    for (let e of events) {
+        runningBalance += e.delta;
+        history.push({
+            time: e.time.toISOString(),
+            balance: runningBalance,
+        });
+    }
+
+    responseData = {
+        message: 'Balance history generated',
+        status: 200,
+        data: history
+    };
+    return NextResponse.json(responseData);
+}
+
+
+
+
+
+        case 'transactions':{
                 const { id } = dataBody;
                 const user = await User.findOne({ _id: id });
                 const onRampTransactions = await OnRampTransactions.find({ userId: id });

@@ -7,7 +7,7 @@ export const VerticalAppbar = ({ href, title, icon }: { href: string; title: str
     const pathname = usePathname()
     const selected = pathname === href
 
-    return <div className={`flex ${selected ? "text-blue-500" : "text-white"} cursor-pointer  p-2 pl-8`} onClick={() => {
+    return <div className={`flex ${selected ? "text-blue-500" : "text-white"} cursor-pointer  pt-8 pl-8 `} onClick={() => {
         router.push(href);
     }}>
         <div className="pr-2" style={{color: selected ? "#3b82f6" : "white"}}>
