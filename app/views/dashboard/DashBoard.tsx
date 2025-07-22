@@ -1,9 +1,13 @@
 "use client";
-import { motion } from "framer-motion";
+
+import { motion, useMotionValue, animate } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
+
+
+
 
 const glass = "backdrop-blur-lg bg-white/10 border border-blue-400/20 shadow-2xl";
 const glowBtn = "bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white font-semibold rounded-full px-5 md:px-7 py-2.5 md:py-3 text-sm md:text-base shadow-lg hover:shadow-blue-400/50 transition-all duration-200 ring-2 ring-blue-400/40 ring-offset-2 ring-offset-[#0A0F1F]";
@@ -17,65 +21,80 @@ const letterAnimation = {
   })
 };
 
-export default function Home() {
-  const controls = useAnimation();
+const features = [
+  { icon: "🏠", label: "Home" },
+  { icon: "🔁", label: "P2P Transaction" },
+  { icon: "➕", label: "Add Money" },
+  { icon: "📄", label: "Transaction History" },
+  { icon: "🔒", label: "Security" },
+];
+
+export default function Dashboard() {
   const router = useRouter();
+  const letterControls = useAnimation();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const x = useMotionValue(0);
+
+  const [scrolled, setScrolled] = useState(false);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 10);
+  };
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     const sequence = async () => {
-      await controls.start((i) => ({
-        ...letterAnimation.visible(i),
-      }));
-      timeout = setTimeout(() => controls.start("hidden"), 400);
+      await letterControls.start((i) => letterAnimation.visible(i));
+      timeout = setTimeout(() => letterControls.start("hidden"), 400);
     };
     sequence();
-    controls.set("hidden");
+    letterControls.set("hidden");
     const interval = setInterval(sequence, 400 + 0.13 * "Trusted by Users.".length * 1000);
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [controls]);
+  }, [letterControls]);
+
+  // Animate the x motion value for the scroller
+  useEffect(() => {
+    const controls = animate(x, -1000, {
+      repeat: Infinity,
+      duration: 20,
+      ease: "linear",
+    });
+    return controls.stop;
+  }, [x]);
+
+  const toggleFAQ = (idx: number) =>
+    setOpenIndex(openIndex === idx ? null : idx);
 
   return (
     <>
       <div className="fixed inset-0 -z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.7, scale: 1 }}
-          transition={{ duration: 2 }}
-          className="absolute left-[-10vw] top-[-10vh] w-[40vw] h-[40vw] bg-blue-700/40 rounded-full blur-3xl"
-        />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.5, scale: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
-          className="absolute right-[-10vw] top-[20vh] w-[30vw] h-[30vw] bg-blue-400/30 rounded-full blur-2xl"
-        />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.4, scale: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-          className="absolute left-[30vw] bottom-[-10vh] w-[40vw] h-[20vw] bg-blue-900/30 rounded-full blur-2xl"
-        />
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.7, scale: 1 }} transition={{ duration: 2 }} className="absolute left-[-10vw] top-[-10vh] w-[40vw] h-[40vw] bg-blue-700/40 rounded-full blur-3xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.5, scale: 1 }} transition={{ duration: 2, delay: 0.5 }} className="absolute right-[-10vw] top-[20vh] w-[30vw] h-[30vw] bg-blue-400/30 rounded-full blur-2xl" />
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.4, scale: 1 }} transition={{ duration: 2, delay: 1 }} className="absolute left-[30vw] bottom-[-10vh] w-[40vw] h-[20vw] bg-blue-900/30 rounded-full blur-2xl" />
       </div>
 
-      <motion.main
-        initial={{ scale: 0.97, opacity: 0.7 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, type: "spring", stiffness: 80 }}
-        className="min-h-screen bg-[#0A0F1F] text-white relative bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]"
-      >
-
+      <motion.main initial={{ scale: 0.97, opacity: 0.7 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, type: "spring", stiffness: 80 }} className="min-h-screen pt-28 bg-[#0A0F1F] text-white relative bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]">
+        
         {/* NAVBAR */}
         <motion.nav
-          initial={{ y: -80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-8 py-4 shadow-2xl mb-2 bg-transparent pt-6 gap-4"
-        >
-         <div className="flex items-center h-16">
+  initial={{ y: -80, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.6 }}
+  className={`fixed top-0 left-0 z-50 w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-8 py-4 shadow-2xl transition-colors duration-300 ${
+    scrolled ? "bg-[#0A0F1F]" : "bg-transparent"
+  } gap-4`}
+>
+
+          <div className="flex items-center h-16">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-80 w-auto" viewBox="0 0 1080 1080" preserveAspectRatio="xMidYMid meet">
           <path fill="white" d="M219 438h8l5 5 1 3 10-1 5 3 6 14 5 14v2h12l2 2-1 4-1 1h-9l2 4 13 2 5 5 1 5v25l-2 4-5-1-1-1-1-29-23-1v36h31l6 2 4 4v44l-4 5-2 1h-35v46l24-1v-37l2-3 5 1 1 3v33l-2 7-3 3-3 1H78l-5-3-2-3V490l3-8 6-4 35-1 69-26Zm2 7-70 26-40 15-8 3v1h19l69-26 35-13-1-6Zm17 8-72 27-24 9v1h114l-3-10-10-26ZM82 485l-3 3v3l9-3 5-2v-1Zm-3 13-1 1v135l2 2h164v-46l-30-1-9-5-5-6-2-6v-20l4-8 7-6 9-3 26-1v-36Zm137 44-6 3-5 6-1 3v16l4 8 8 5h68l1-1v-39l-1-1Z"/>
           <path fill="white" d="M527 472h13l3 3 1 7 1 28 8-7 10-3h12l10 3 8 6 6 7 3 9 1 6v49l-2 4-2 1h-11l-5-2-1-2-1-46-3-10-4-4-3-1h-12l-8 4-4 5-2 7-2 46-3 3h-13l-4-3-1-14v-90l3-5Z"/>
@@ -116,132 +135,109 @@ export default function Home() {
         </svg>
     </div>
 
-          <motion.button
-  whileHover={{ scale: 1.08, boxShadow: "0 0 16px #60a5fa" }}
-  whileTap={{ scale: 0.97 }}
-  className={`${glowBtn} mt-4 md:mt-0`}
-  onClick={() => router.push('/login')}
->
-  Login
-</motion.button>
+        <motion.button
+          whileHover={{ scale: 1.08, boxShadow: "0 0 16px #60a5fa" }}
+          whileTap={{ scale: 0.97 }}
+          className={`${glowBtn} hidden md:block`}
+          onClick={() => router.push('/login')}
+        >
+          Login
+        </motion.button>
+    </motion.nav>
 
-        </motion.nav>
 
         {/* HERO SECTION */}
         <section className="pt-10 md:pt-16 px-4 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="space-y-6 md:space-y-8"
-          >
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-8">
             <h1 className="text-3xl md:text-5xl font-bold leading-tight text-[#F1F5F9] drop-shadow-xl">
-              Trusted by Users.<br />
+              {"Trusted by Users.".split("").map((char, i) => (
+                <motion.span key={i} custom={i} animate={letterControls} variants={letterAnimation}>{char}</motion.span>
+              ))}
+              <br />
               <span className="text-blue-400">Powered by Security.</span>
             </h1>
-            <p className="text-base md:text-lg text-[#CBD5E1]">
-              Experience fast, reliable, and secure digital payments with futuristic security.
-            </p>
-            <motion.button
-  whileHover={{ scale: 1.07, boxShadow: "0 0 24px #60a5fa" }}
-  whileTap={{ scale: 0.96 }}
-  className={`${glowBtn} text-base mx-auto flex items-center md:mx-0 mt-6 md:mt-0`}
-  onClick={() => router.push('/login')}
->
-  Get Started
-</motion.button>
-
+            <p className="text-base md:text-lg text-[#CBD5E1]">Experience fast, reliable, and secure digital payments with futuristic security.</p>
+            <motion.button whileHover={{ scale: 1.07, boxShadow: "0 0 24px #60a5fa" }} whileTap={{ scale: 0.96 }} className={`${glowBtn} text-base mx-auto flex items-center md:mx-0 mt-6 md:mt-0`} onClick={() => router.push('/login')}>Get Started</motion.button>
           </motion.div>
-
           <div className="flex justify-center items-center w-full">
-            <motion.div
-              initial={{ opacity: 1, y: 50, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: [1, 1.08, 1] }}
-              transition={{
-                opacity: { duration: 0.6 },
-                y: { duration: 0.6 },
-                scale: { duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }
-              }}
-              className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl max-w-xs w-full"
-            >
-              <Image
-                src="/paytm-1.png"
-                alt="Illustration representing payment services"
-                width={500}
-                height={370}
-                className="w-full h-auto rounded-2xl"
-              />
+            <motion.div initial={{ opacity: 1, y: 50, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: [1, 1.08, 1] }} transition={{ opacity: { duration: 0.6 }, y: { duration: 0.6 }, scale: { duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" } }} className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl max-w-xs w-full">
+              <Image src="/paytm-1.png" alt="Illustration representing payment services" width={500} height={370} className="w-full h-auto rounded-2xl" />
             </motion.div>
           </div>
         </section>
 
-       {/* FEATURE SCROLLER */}
-<section className="mt-16 px-4 sm:px-6 flex justify-center h-auto w-auto">
-  <div className="w-full h-auto overflow-hidden">
+
+
+<section className="mt-16 px-4 sm:px-6 flex justify-center">
+  <div className="w-full max-h-[240px] overflow-hidden pt-4"> {/* extra top padding */}
     <motion.div
-      className="flex gap-12 w-max h-auto"
-      animate={{ x: ["0%", "-50%"] }}
-      transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-      style={{ willChange: "transform" }}
+      className="flex gap-10 w-max pb-4"
+      style={{ x }}
     >
-      {/* Duplicate the items once for seamless loop */}
-      {[
-        { icon: "🏠", label: "Home" },
-        { icon: "🔁", label: "P2P Transaction" },
-        { icon: "➕", label: "Add Money" },
-        { icon: "📄", label: "Transaction History" },
-        { icon: "🔒", label: "Security" },
-      ].flatMap((item, i, arr) =>
-        [item, ...arr].map((subItem, index) => (
-          <motion.div
-            key={`${i}-${index}`}
-            initial={{ opacity: 0, y: 30, scale: 1.5 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{
-              delay: (index % arr.length) * 0.01,
-              type: "spring",
-              stiffness: 80,
-              damping: 12,
-            }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.2, boxShadow: "0 0 40px #60a5fa" }}
-            whileTap={{ scale: 0.96 }}
-            className="min-w-[100px] bg-[#0f172a] snap-start flex flex-col items-center justify-center p-6 rounded-2xl border border-blue-400/20 shadow-lg transition-transform cursor-pointer "
-            style={{ boxShadow: "4px 4px 32px 4px rgba(30,64,175,0.25)" }}
-          >
-            <span className="flex  items-center justify-center w-12 h-12 rounded-full bg-blue-700/30 shadow-lg text-3xl text-blue-300 mb-2">
-              {subItem.icon}
-            </span>
-            <span className="text-white font-semibold">{subItem.label}</span>
-          </motion.div>
-        ))
-      )}
+      {[...features, ...features, ...features].map((item, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            delay: (index % features.length) * 0.18,
+            type: "spring",
+            stiffness: 80,
+            damping: 12,
+          }}
+          viewport={{ once: true }}
+          whileHover={{
+            scale: 1.04,
+            boxShadow: "0 0 10px rgba(59, 130, 246, 0.5)",
+            border: "1px solid rgba(59, 130, 246, 0.7)",
+          }}
+          whileTap={{ scale: 0.96 }}
+          className="min-w-[180px] flex-shrink-0 snap-start flex flex-col items-center justify-center p-5 rounded-2xl border border-blue-400/20 transition-transform cursor-pointer bg-[#0f172a]"
+        >
+          <span className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-700/30 shadow-lg text-3xl text-blue-300 mb-2">
+            {item.icon}
+          </span>
+          <span className="text-white font-semibold text-center">{item.label}</span>
+        </motion.div>
+      ))}
     </motion.div>
   </div>
 </section>
 
 
+
+
+
+
+
+
         {/* IMAGE BANNER */}
-         <div className="flex justify-center items-center w-full h-auto mt-16 mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              whileHover={{ scale: 1.02, boxShadow: "0 0 48px #60a5fa" }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.5}}
-              className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl w-auto max-w-6xl"
-            >
-              <img
-                src="/paytm-2.jpg"
-                alt="Illustration representing payment services"
-                className="rounded-2xl w-auto h-auto max-h-128"
-              />
-            </motion.div>
-          </div>
+        <div className="flex justify-center items-center w-full h-auto mt-16 mb-16">
+          <motion.div initial={{ opacity: 0, y: 50, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} whileHover={{ scale: 1.02, boxShadow: "0 0 48px #60a5fa" }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.5 }} className="rounded-3xl border-4 border-blue-900/60 bg-gradient-to-br from-[#1a2740] to-[#22345a] p-2 shadow-2xl w-auto max-w-6xl">
+            <img src="/paytm-2.jpg" alt="Illustration representing payment services" className="rounded-2xl w-auto h-auto max-h-128" />
+          </motion.div>
+        </div>
+
         {/* FAQ SECTION */}
         <section className="max-w-3xl mx-auto mt-12 mb-20 px-4 sm:px-6">
           <h2 className="text-3xl font-bold mb-6 text-center text-blue-300">Frequently Asked Questions</h2>
-          <FAQAccordion />
+          <div className="space-y-3">
+            {[
+              { question: "What is EchoPay?", answer: "EchoPay is a secure digital payment platform that allows you to send, receive, and manage money easily and safely." },
+              { question: "How do I create a EchoPay account?", answer: "Simply click on the 'Get Started' button and follow the registration steps to set up your EchoPay account." },
+              { question: "How can I add money to my EchoPay wallet?", answer: "You can add money using your dummy bank account from the 'Add Money' section." },
+              { question: "How do I send money to someone using EchoPay?", answer: "Go to the 'P2P Transaction' section, enter the recipient's details, and the amount you wish to send." },
+              { question: "How do I view my transaction history?", answer: "Navigate to the 'Transaction History' section to see all your past transactions in detail." },
+              { question: "How do I view my profile?", answer: "Go to the 'Home' section to see your profile details." }
+            ].map((item, idx) => (
+              <div key={idx}>
+                <button onClick={() => toggleFAQ(idx)} className={`w-full bg-[#0f172a] text-left px-5 py-4 rounded-lg border border-blue-400/40 text-lg font-semibold focus:outline-none flex justify-between items-center transition-all duration-200 ${openIndex === idx ? 'ring-2 ring-blue-400' : ''}`}>
+                  <span>{item.question}</span><span className="ml-4 text-blue-300">{openIndex === idx ? '▲' : '▼'}</span>
+                </button>
+                {openIndex === idx && <div className="px-5 py-3 bg-[#0f172a] text-[#cbd5e1] border-l-4 border-blue-400/40 rounded-b-lg animate-fade-in">{item.answer}</div>}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* FOOTER */}
@@ -251,62 +247,5 @@ export default function Home() {
         </footer>
       </motion.main>
     </>
-  );
-}
-
-// FAQ COMPONENT
-const faqData = [
-  {
-    question: "What is EchoPay?",
-    answer: "EchoPay is a secure digital payment platform that allows you to send, receive, and manage money easily and safely.",
-  },
-  {
-    question: "How do I create a EchoPay account?",
-    answer: "Simply click on the 'Get Started' button and follow the registration steps to set up your EchoPay account.",
-  },
-  {
-    question: "How can I add money to my EchoPay wallet?",
-    answer: "You can add money using your dummy bank account from the 'Add Money' section.",
-  },
-  {
-    question: "How do I send money to someone using EchoPay?",
-    answer: "Go to the 'P2P Transaction' section, enter the recipient's details, and the amount you wish to send.",
-  },
-  {
-    question: "How do I view my transaction history?",
-    answer: "Navigate to the 'Transaction History' section to see all your past transactions in detail.",
-  },
-  {
-    question: "How do I view my profile?",
-    answer: "Go to the 'Home' section to see your profile details."
-  }
-];
-
-function FAQAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (idx: number) => {
-    setOpenIndex(openIndex === idx ? null : idx);
-  };
-
-  return (
-    <div className="space-y-3">
-      {faqData.map((item, idx) => (
-        <div key={idx}>
-          <button
-            onClick={() => toggle(idx)}
-            className={`w-full bg-[#0f172a] text-left px-5 py-4 rounded-lg border border-blue-400/40 text-lg font-semibold focus:outline-none flex justify-between items-center transition-all duration-200 ${openIndex === idx ? 'ring-2 ring-blue-400' : ''}`}
-          >
-            <span>{item.question}</span>
-            <span className="ml-4 text-blue-300">{openIndex === idx ? '▲' : '▼'}</span>
-          </button>
-          {openIndex === idx && (
-            <div className="px-5 py-3 bg-[#0f172a] text-[#cbd5e1] border-l-4 border-blue-400/40 rounded-b-lg animate-fade-in">
-              {item.answer}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
   );
 }
