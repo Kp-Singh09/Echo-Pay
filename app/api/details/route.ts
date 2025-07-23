@@ -32,42 +32,33 @@ export async function POST(req: NextRequest) {
 
 
 
-        case 'transfer':{
-                const { amount, bank, id } = dataBody;
-                const user = await User.findOne({ _id: id });
-                if (!user) {
-                    responseData = { error: 'Invalid user', status: 400 };
-                    return NextResponse.json(responseData);
-                }
-                if(amount > 100000){
-                    const onRampTransactions = new OnRampTransactions({
-                        timeStamp: new Date(),
-                        status: "failed",
-                        amount: amount,
-                        bank: bank,
-                        userId: id,
-                    });
-                    await onRampTransactions.save();
-                    responseData = { error: 'Amount must be less than 100000', status: 400 };
-                    return NextResponse.json(responseData);
-                }
 
-                    const balance = await Balance.findOne({ userId: id });
-                    balance.amount += amount;
-                    await balance.save();
-                    const onRampTransactions = new OnRampTransactions({
-                    timeStamp: new Date(),
-                    status: "success",
-                    amount: amount,
-                    bank: bank,
-                    userId: id,
-                });
-                await onRampTransactions.save();
-                responseData = { message: 'Money added successfully', status: 200 };
-                return NextResponse.json(responseData);
-                break;
-            }
+            case 'transfer': {
+  const { amount, bank, id } = dataBody;
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    return NextResponse.json({ error: 'Invalid user', status: 400 });
+  }
 
+  if (amount > 100000) {
+    const failedTx = new OnRampTransactions({ timeStamp: new Date(), status: "failed", amount, bank, userId: id });
+    await failedTx.save();
+    return NextResponse.json({ error: 'Amount must be less than 100000', status: 400 });
+  }
+
+  const balance = await Balance.findOne({ userId: id });
+  balance.amount += amount;
+  await balance.save();
+
+  const onRampTx = new OnRampTransactions({ timeStamp: new Date(), status: "success", amount, bank, userId: id });
+  await onRampTx.save();
+
+  return NextResponse.json({
+    message: 'Money added successfully',
+    status: 200,
+    newBalance: balance.amount, // ✅ send this
+  });
+}
 
 
 
@@ -228,6 +219,29 @@ export async function POST(req: NextRequest) {
 }
 
 
+        case 'topup-history': {
+  const { id } = dataBody;
+
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    return NextResponse.json({ error: 'User not found', status: 400 });
+  }
+
+  const transactions = await OnRampTransactions.find({ userId: id, status: "success" })
+    .sort({ timeStamp: -1 });
+
+  const formatted = transactions.map(tx => ({
+    bank: tx.bank || "N/A",
+    amount: Number(tx.amount) || 0,
+    date: tx.timeStamp ? new Date(tx.timeStamp).toISOString() : new Date().toISOString(),
+  }));
+
+  return NextResponse.json({
+    message: "Recent top-ups fetched",
+    status: 200,
+    data: formatted, // ✅ fix this line
+  });
+}
 
 
 

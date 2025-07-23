@@ -97,7 +97,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </svg>
             </button>
             <VerticalAppbar href={"/account-details"} icon={<BalanceIcon />} title="Account Details" />
-            <VerticalAppbar href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
+            <VerticalAppbar href={"/topup"} icon={<TransferIcon />} title="TopUp" />
             <VerticalAppbar href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
             <VerticalAppbar href={"/p2p"} icon={<P2PTransferIcon />} title="P2P" />
             <button
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="hidden md:flex fixed top-20 left-0 w-72 bg-[#0A0F1F] border-r border-slate-300 h-[calc(100vh-5rem)] mr-4 pt-20 z-20">
           <div>
             <VerticalAppbar href={"/account-details"} icon={<BalanceIcon />} title="Account Details" />
-            <VerticalAppbar href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
+            <VerticalAppbar href={"/topup"} icon={<TransferIcon />} title="TopUp" />
             <VerticalAppbar href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
             <VerticalAppbar href={"/p2p"} icon={<P2PTransferIcon />} title="P2P Transfer" />
           </div>
@@ -132,7 +132,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 
 // Icon Components
-function TransferIcon() {
+function P2PTransferIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
       <path d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
@@ -148,7 +148,7 @@ function TransactionsIcon() {
   );
 }
 
-function P2PTransferIcon() {
+function TransferIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
       <path d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
