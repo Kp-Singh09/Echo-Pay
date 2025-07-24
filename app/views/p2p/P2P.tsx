@@ -1,4 +1,5 @@
 "use client";
+
 import { Alert, AlertColor, Snackbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
@@ -62,6 +63,7 @@ export default function P2P() {
   const [sentSummary, setSentSummary] = useState<
     { receiver: string; totalAmount: number }[]
   >([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   const fetchSummary = async () => {
     const userId = localStorage.getItem("user_id");
@@ -89,6 +91,16 @@ export default function P2P() {
 
   useEffect(() => {
     fetchSummary();
+
+    // Detect mobile screen
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize(); // check initially
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -136,12 +148,14 @@ export default function P2P() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#0A0F1F] py-22 overflow-hidden">
-      <Particles
-        id="tsparticles"
-        init={loadSlim}
-        className="absolute inset-0 z-0 pointer-events-none"
-        options={particlesOptions}
-      />
+      {!isMobile && (
+        <Particles
+          id="tsparticles"
+          init={loadSlim}
+          className="absolute inset-0 z-0 pointer-events-none"
+          options={particlesOptions}
+        />
+      )}
 
       <h1 className="text-4xl font-bold mb-10 text-white tracking-tight drop-shadow-sm relative z-10">
         P2P Transfer
@@ -162,11 +176,15 @@ export default function P2P() {
             <div className="flex flex-col lg:flex-row gap-10">
               {/* Left: Form */}
               <div className="flex-1">
-                <h2 className="text-3xl font-semibold mb-6 text-white">Send Money</h2>
+                <h2 className="text-3xl font-semibold mb-6 text-white">
+                  Send Money
+                </h2>
                 <hr className="mb-6 border-gray-700" />
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div>
-                    <label className="block text-lg font-medium text-gray-300 mb-2">Amount</label>
+                    <label className="block text-lg font-medium text-gray-300 mb-2">
+                      Amount
+                    </label>
                     <input
                       type="text"
                       placeholder="Amount"
@@ -176,7 +194,9 @@ export default function P2P() {
                     />
                   </div>
                   <div>
-                    <label className="block text-lg font-medium text-gray-300 mb-2">Phone Number</label>
+                    <label className="block text-lg font-medium text-gray-300 mb-2">
+                      Phone Number
+                    </label>
                     <input
                       type="text"
                       placeholder="Phone Number"
@@ -198,7 +218,9 @@ export default function P2P() {
 
               {/* Right: Pie Chart */}
               <div className="flex-1">
-                <h2 className="text-white mb-4 text-xl font-semibold">P2P Sent Distribution</h2>
+                <h2 className="text-white mb-4 text-xl font-semibold">
+                  P2P Sent Distribution
+                </h2>
                 {sentSummary.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
@@ -212,14 +234,19 @@ export default function P2P() {
                         label={({ totalAmount }) => `₹${totalAmount}`}
                       >
                         {sentSummary.map((_, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
                         ))}
                       </Pie>
                       <Tooltip content={<CustomTooltip sentSummary={sentSummary} />} />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
-                  <p className="text-sm text-slate-400">No P2P transactions made yet.</p>
+                  <p className="text-sm text-slate-400">
+                    No P2P transactions made yet.
+                  </p>
                 )}
               </div>
             </div>

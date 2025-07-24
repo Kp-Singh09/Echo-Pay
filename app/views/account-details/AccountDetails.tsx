@@ -44,11 +44,20 @@ export default function AccountDetails() {
   const [balanceHistory, setBalanceHistory] = useState<BalanceHistory[]>([]);
   const [filteredHistory, setFilteredHistory] = useState<BalanceHistory[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>("last10");
-
   const [isLoading, setIsLoading] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(false);
+
   const count = useMotionValue(0);
   const animatedBalance = useTransform(count, (latest) => latest.toFixed(2));
   const [displayBalance, setDisplayBalance] = useState("0.00");
+
+  // Detect screen size
+  useEffect(() => {
+    const checkSize = () => setIsDesktop(window.innerWidth >= 768);
+    checkSize();
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  }, []);
 
   useEffect(() => {
     return animatedBalance.on("change", (latest) => {
@@ -131,16 +140,12 @@ export default function AccountDetails() {
       case "lastWeek":
         const lastWeek = new Date();
         lastWeek.setDate(lastWeek.getDate() - 7);
-        filtered = data.filter(
-          (entry) => new Date(entry.time) >= lastWeek
-        );
+        filtered = data.filter((entry) => new Date(entry.time) >= lastWeek);
         break;
       case "lastMonth":
         const lastMonth = new Date();
         lastMonth.setMonth(lastMonth.getMonth() - 1);
-        filtered = data.filter(
-          (entry) => new Date(entry.time) >= lastMonth
-        );
+        filtered = data.filter((entry) => new Date(entry.time) >= lastMonth);
         break;
       default:
         filtered = [...data];
@@ -163,12 +168,14 @@ export default function AccountDetails() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#0A0F1F] text-white overflow-hidden px-4 py-8">
-      <Particles
-        id="tsparticles"
-        init={loadSlim}
-        className="absolute inset-0 z-0 pointer-events-none"
-        options={particlesOptions}
-      />
+      {isDesktop && (
+        <Particles
+          id="tsparticles"
+          init={loadSlim}
+          className="absolute inset-0 z-0 pointer-events-none"
+          options={particlesOptions}
+        />
+      )}
 
       <Tilt
         glareEnable={true}
@@ -186,7 +193,6 @@ export default function AccountDetails() {
             </h1>
 
             <div className="space-y-10 mb-10">
-              {/* User Info */}
               <div className="space-y-4">
                 <div className="flex flex-row items-center justify-between border-b border-gray-700 pb-1">
                   <span className="text-gray-400 text-sm">Phone</span>
@@ -200,7 +206,6 @@ export default function AccountDetails() {
                 </div>
               </div>
 
-              {/* Graph Below - More space added */}
               <div className="mt-10">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-md text-blue-400 font-semibold">

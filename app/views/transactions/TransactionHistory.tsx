@@ -26,8 +26,15 @@ export default function TransactionHistory() {
   const [onRampTransactions, setOnRampTransactions] = useState<OnRampTransaction[]>([]);
   const [p2pTransactions, setP2PTransactions] = useState<P2PTransaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showParticles, setShowParticles] = useState(false);
+  const [mounted, setMounted] = useState(false); // ✅ NEW FLAG
 
   useEffect(() => {
+    setMounted(true); // ✅ Avoid SSR mismatch
+    if (window.innerWidth >= 768) {
+      setShowParticles(true); // ✅ Only enable particles on non-mobile
+    }
+
     const fetchTransactions = async () => {
       const response = await fetch("/api/details", {
         method: "POST",
@@ -53,6 +60,7 @@ export default function TransactionHistory() {
         setIsLoading(false);
       }
     };
+
     fetchTransactions();
   }, []);
 
@@ -66,12 +74,14 @@ export default function TransactionHistory() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#0A0F1F] px-4 py-12 text-white overflow-hidden">
-      <Particles
-        id="tsparticles"
-        init={loadSlim}
-        options={particlesOptions}
-        className="absolute inset-0 z-0 pointer-events-none"
-      />
+      {mounted && showParticles && (
+        <Particles
+          id="tsparticles"
+          init={loadSlim}
+          options={particlesOptions}
+          className="absolute inset-0 z-0 pointer-events-none"
+        />
+      )}
 
       <Tilt
         glareEnable={true}
@@ -109,7 +119,6 @@ export default function TransactionHistory() {
             {activeTab === "addedMoney" && (
               <TransactionCard title="OnRamp Transactions" data={onRampTransactions} type="onRamp" />
             )}
-
             {activeTab === "sent" && (
               <TransactionCard
                 title="Sent Transactions"
@@ -119,7 +128,6 @@ export default function TransactionHistory() {
                 type="p2pSent"
               />
             )}
-
             {activeTab === "received" && (
               <TransactionCard
                 title="Received Transactions"
@@ -136,7 +144,7 @@ export default function TransactionHistory() {
   );
 }
 
-// PAGINATED CARD
+// ✅ TransactionCard remains unchanged
 type TransactionCardProps = {
   title: string;
   data: any[];
@@ -193,7 +201,6 @@ function TransactionCard({ title, data, type }: TransactionCardProps) {
           <div className="text-gray-400">No transactions found.</div>
         )}
 
-        {/* Pagination Controls */}
         {data.length > itemsPerPage && (
           <div className="flex justify-center mt-6 gap-2">
             <button
