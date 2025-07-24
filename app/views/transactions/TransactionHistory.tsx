@@ -73,7 +73,7 @@ export default function TransactionHistory() {
   }
 
   return (
-    <div className="pt-2 sm:pt-35 pl-4 sm:pl-18 pr-4 sm:pr-18 relative min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] px-4 py-12 text-white overflow-hidden">
+    <div className="pt-20 sm:pt-35 pl-4 sm:pl-18 pr-4 sm:pr-18 relative min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] px-4 py-12 text-white overflow-hidden">
       {mounted && showParticles && (
         <Particles
           id="tsparticles"

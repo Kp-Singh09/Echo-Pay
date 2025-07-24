@@ -160,14 +160,14 @@ export default function AccountDetails() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0F1F]">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="relative pb-4 pt-4 sm:pt-35 pl-4 sm:pl-18 pr-4 sm:pr-18 min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] overflow-hidden ">
+    <div className="relative pb-4 pt-20 sm:pt-35 pl-4 sm:pl-18 pr-4 sm:pr-18 min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] overflow-hidden ">
       {isDesktop && (
         <Particles
           id="tsparticles"
