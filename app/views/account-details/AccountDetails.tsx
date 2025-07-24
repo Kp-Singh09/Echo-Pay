@@ -187,12 +187,12 @@ export default function AccountDetails() {
 
             <div className="space-y-10 mb-10">
               {/* User Info */}
-              <div className="space-y-6">
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Phone</span>
-                  <span className="font-medium">{accountData.phone}</span>
+              <div className="space-y-4">
+                <div className="flex flex-row items-center justify-between border-b border-gray-700 pb-1">
+                  <span className="text-gray-400 text-sm">Phone</span>
+                  <span className="font-medium text-sm">{accountData.phone}</span>
                 </div>
-                <div className="flex justify-between pt-3 items-center">
+                <div className="flex flex-row items-center justify-between pt-1">
                   <span className="text-gray-400">Available Balance</span>
                   <motion.span className="text-green-400 font-semibold text-xl">
                     ₹ {displayBalance}
@@ -200,8 +200,8 @@ export default function AccountDetails() {
                 </div>
               </div>
 
-              {/* Graph Below */}
-              <div>
+              {/* Graph Below - More space added */}
+              <div className="mt-10">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-md text-blue-400 font-semibold">
                     Balance History
