@@ -22,11 +22,15 @@ const letterAnimation = {
 };
 
 const features = [
-  { icon: "🏠", label: "Home" },
-  { icon: "🔁", label: "P2P Transaction" },
-  { icon: "➕", label: "Add Money" },
+  { icon: "📊", label: "Spending Summary" },
+  { icon: "🆘", label: "24/7 Support" },
+  { icon: "👨‍💼", label: "Business Tools" },
+  { icon: "🔔", label: "Notifications" },
+  { icon: "🔃", label: "P2P Transaction" },
+  { icon: "➕", label: "Top-Up Money" },
   { icon: "📄", label: "Transaction History" },
   { icon: "🔒", label: "Security" },
+  { icon: "💬", label: "FAQ" },
 ];
 
 export default function Dashboard() {
