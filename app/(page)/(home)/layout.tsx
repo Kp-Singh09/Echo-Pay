@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="hidden md:flex fixed top-20 left-0 w-72 bg-[#0A0F1F] border-r border-slate-300 h-[calc(100vh-5rem)] mr-4 pt-20 z-20">
           <div>
             <VerticalAppbar href={"/account-details"} icon={<BalanceIcon />} title="Account Details" />
-            <VerticalAppbar href={"/topup"} icon={<TransferIcon />} title="TopUp" />
+            <VerticalAppbar href={"/topup"} icon={<TransferIcon />} title="Top Up" />
             <VerticalAppbar href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
             <VerticalAppbar href={"/p2p"} icon={<P2PTransferIcon />} title="P2P Transfer" />
           </div>

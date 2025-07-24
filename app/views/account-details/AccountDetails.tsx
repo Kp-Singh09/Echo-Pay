@@ -3,9 +3,14 @@
 import { useEffect, useState } from "react";
 import particlesOptions from "@libs/particlesConfig";
 import { loadSlim } from "tsparticles-slim";
-import Tilt from 'react-parallax-tilt';
+import Tilt from "react-parallax-tilt";
 import Particles from "react-tsparticles";
-import { animate, useMotionValue, useTransform, motion } from "framer-motion";
+import {
+  animate,
+  useMotionValue,
+  useTransform,
+  motion,
+} from "framer-motion";
 import {
   LineChart,
   Line,
@@ -27,6 +32,8 @@ interface BalanceHistory {
   balance: number;
 }
 
+type FilterOption = "last10" | "today" | "yesterday" | "lastWeek" | "lastMonth";
+
 export default function AccountDetails() {
   const [accountData, setAccountData] = useState<AccountData>({
     id: "",
@@ -35,6 +42,9 @@ export default function AccountDetails() {
   });
 
   const [balanceHistory, setBalanceHistory] = useState<BalanceHistory[]>([]);
+  const [filteredHistory, setFilteredHistory] = useState<BalanceHistory[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<FilterOption>("last10");
+
   const [isLoading, setIsLoading] = useState(true);
   const count = useMotionValue(0);
   const animatedBalance = useTransform(count, (latest) => latest.toFixed(2));
@@ -82,7 +92,12 @@ export default function AccountDetails() {
 
       if (historyRes.ok) {
         const data = await historyRes.json();
-        setBalanceHistory(data.data);
+        const sorted = data.data.sort(
+          (a: BalanceHistory, b: BalanceHistory) =>
+            new Date(a.time).getTime() - new Date(b.time).getTime()
+        );
+        setBalanceHistory(sorted);
+        applyFilter(selectedFilter, sorted);
       }
 
       setIsLoading(false);
@@ -90,6 +105,53 @@ export default function AccountDetails() {
 
     fetchAccountData();
   }, [count]);
+
+  const applyFilter = (filter: FilterOption, data = balanceHistory) => {
+    const now = new Date();
+    let filtered: BalanceHistory[] = [];
+
+    switch (filter) {
+      case "last10":
+        filtered = [...data.slice(-10)];
+        break;
+      case "today":
+        filtered = data.filter(
+          (entry) =>
+            new Date(entry.time).toDateString() === now.toDateString()
+        );
+        break;
+      case "yesterday":
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        filtered = data.filter(
+          (entry) =>
+            new Date(entry.time).toDateString() === yesterday.toDateString()
+        );
+        break;
+      case "lastWeek":
+        const lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 7);
+        filtered = data.filter(
+          (entry) => new Date(entry.time) >= lastWeek
+        );
+        break;
+      case "lastMonth":
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        filtered = data.filter(
+          (entry) => new Date(entry.time) >= lastMonth
+        );
+        break;
+      default:
+        filtered = [...data];
+    }
+
+    setFilteredHistory(filtered);
+  };
+
+  useEffect(() => {
+    applyFilter(selectedFilter);
+  }, [selectedFilter, balanceHistory]);
 
   if (isLoading) {
     return (
@@ -100,7 +162,7 @@ export default function AccountDetails() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#0A0F1F] text-white overflow-hidden px-4 py-8">
+    <div className="relative min-h-screen flex items-center justify-center bg-[#0A0F1F] text-white overflow-hidden px-4 py-8">
       <Particles
         id="tsparticles"
         init={loadSlim}
@@ -108,93 +170,104 @@ export default function AccountDetails() {
         options={particlesOptions}
       />
 
-
       <Tilt
-  glareEnable={true}
-  glareMaxOpacity={0.2}
-  scale={1.02}
-  transitionSpeed={250}
-  tiltMaxAngleX={10}
-  tiltMaxAngleY={10}
-  className="w-full max-w-md"
->
+        glareEnable={true}
+        glareMaxOpacity={0.2}
+        scale={1.02}
+        transitionSpeed={250}
+        tiltMaxAngleX={3}
+        tiltMaxAngleY={3}
+        className="w-full max-w-5xl"
+      >
+        <div className="w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
+          <div className="rounded-[inherit] p-8 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
+            <h1 className="text-4xl font-bold text-center mb-10 drop-shadow-md text-white">
+              Account Overview
+            </h1>
 
+            <div className="space-y-10 mb-10">
+              {/* User Info */}
+              <div className="space-y-6">
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Phone</span>
+                  <span className="font-medium">{accountData.phone}</span>
+                </div>
+                <div className="flex justify-between pt-3 items-center">
+                  <span className="text-gray-400">Available Balance</span>
+                  <motion.span className="text-green-400 font-semibold text-xl">
+                    ₹ {displayBalance}
+                  </motion.span>
+                </div>
+              </div>
 
-      {/* Account Card */}
-      <div className="relative z-10 w-full max-w-md p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
-        <div className="rounded-[inherit] p-8 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
-          <h1 className="text-4xl font-bold text-center mb-8 drop-shadow-md text-white">
-            Account Details
-          </h1>
+              {/* Graph Below */}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-md text-blue-400 font-semibold">
+                    Balance History
+                  </h2>
+                  <select
+                    value={selectedFilter}
+                    onChange={(e) =>
+                      setSelectedFilter(e.target.value as FilterOption)
+                    }
+                    className="bg-[#0F172A] border border-blue-700 text-sm rounded px-2 py-1 text-white"
+                  >
+                    <option value="last10">Last 10</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="lastWeek">Last Week</option>
+                    <option value="lastMonth">Last Month</option>
+                  </select>
+                </div>
 
-          <div className="space-y-6">
-            <div className="flex justify-between border-b border-gray-700 pb-3">
-              <span className="text-gray-400">Phone</span>
-              <span className="font-medium">{accountData.phone}</span>
+                {filteredHistory.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart data={filteredHistory}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis
+                        dataKey="time"
+                        tickFormatter={(time) =>
+                          new Date(time).toLocaleDateString("en-IN", {
+                            month: "short",
+                            day: "numeric",
+                          })
+                        }
+                        stroke="#94A3B8"
+                      />
+                      <YAxis stroke="#94A3B8" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#1E293B",
+                          border: "none",
+                        }}
+                        labelFormatter={(time) =>
+                          new Date(time).toLocaleString("en-IN")
+                        }
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="balance"
+                        stroke="#3B82F6"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <p className="text-sm text-slate-400">
+                    No transaction history found for this filter.
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="flex justify-between pt-3 items-center">
-              <span className="text-gray-400">Available Balance</span>
-              <motion.span className="text-green-400 font-semibold text-xl">
-                ₹ {displayBalance}
-              </motion.span>
-            </div>
+
+            <p className="text-sm text-center text-slate-500">
+              Data updates every time you perform a transaction.
+            </p>
           </div>
         </div>
-      </div>
-</Tilt>
-
-
- <Tilt
-  glareEnable={true}
-  glareMaxOpacity={0.2}
-  scale={1.02}
-  transitionSpeed={250}
-  tiltMaxAngleX={2}
-  tiltMaxAngleY={2}
-  className="w-full"
->
-
-        <div className="relative z-10 w-full max-w-4xl mt-12 p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
-    <div className="rounded-[inherit] p-6 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
-    <h2 className="text-lg text-blue-400 font-semibold mb-4">Balance History</h2>
-    {balanceHistory.length > 0 ? (
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={balanceHistory}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-          <XAxis
-            dataKey="time"
-            tickFormatter={(time) =>
-              new Date(time).toLocaleDateString("en-IN", {
-                month: "short",
-                day: "numeric",
-              })
-            }
-            stroke="#94A3B8"
-          />
-          <YAxis stroke="#94A3B8" />
-          <Tooltip
-            contentStyle={{ backgroundColor: "#1E293B", border: "none" }}
-            labelFormatter={(time) =>
-              new Date(time).toLocaleString("en-IN")
-            }
-          />
-          <Line
-            type="monotone"
-            dataKey="balance"
-            stroke="#3B82F6"
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    ) : (
-      <p className="text-sm text-slate-400">No transaction history found.</p>
-    )}
-      </div>
-        </div>
-
-</Tilt>
+      </Tilt>
     </div>
-
   );
 }

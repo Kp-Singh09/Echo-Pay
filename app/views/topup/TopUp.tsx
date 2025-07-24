@@ -185,7 +185,6 @@ const paginatedHistory = filteredHistory.slice(
                     value={bank}
                     onChange={(e) => setBank(e.target.value)}
                   >
-                    <option value="Demo Bank">Demo Bank</option>
                     <option value="SBI">SBI</option>
                     <option value="HDFC">HDFC</option>
                     <option value="ICICI">ICICI</option>
@@ -235,7 +234,6 @@ const paginatedHistory = filteredHistory.slice(
       className="px-3 py-2 rounded bg-[#1e293b] text-white border border-blue-600 text-sm focus:outline-none"
     >
       <option value="All">All Banks</option>
-      <option value="Demo Bank">Demo Bank</option>
       <option value="SBI">SBI</option>
       <option value="HDFC">HDFC</option>
       <option value="ICICI">ICICI</option>

@@ -5,7 +5,6 @@ import Tilt from "react-parallax-tilt";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import particlesOptions from "@libs/particlesConfig";
-
 import {
   PieChart,
   Pie,
@@ -18,12 +17,16 @@ import {
 const CustomTooltip = ({
   active,
   payload,
+  sentSummary = [],
 }: {
   active?: boolean;
   payload?: any;
+  sentSummary?: { receiver: string; totalAmount: number }[];
 }) => {
-  if (active && payload && payload.length > 0) {
+  if (active && payload && payload.length > 0 && sentSummary.length > 0) {
     const { receiver, totalAmount } = payload[0].payload;
+    const total = sentSummary.reduce((sum, cur) => sum + cur.totalAmount, 0);
+    const percent = ((totalAmount / total) * 100).toFixed(2);
     return (
       <div className="bg-white/90 border border-gray-300 shadow-md rounded p-2 text-sm text-black">
         <div>
@@ -32,14 +35,15 @@ const CustomTooltip = ({
         <div>
           <strong>Amount Sent:</strong> ₹{totalAmount}
         </div>
+        <div>
+          <strong>Percent:</strong> {percent}%
+        </div>
       </div>
     );
   }
-
   return null;
 };
 
-// Color palette for chart segments
 const COLORS = [
   "#3B82F6",
   "#EC4899",
@@ -120,7 +124,7 @@ export default function P2P() {
       setSnackbarType("success");
       setAmount("");
       setPhoneNumber("");
-      await fetchSummary(); // ✅ Refresh chart data
+      await fetchSummary();
     } else {
       setSnackbarMsg(data.error || "Something went wrong!");
       setSnackbarType("error");
@@ -143,104 +147,82 @@ export default function P2P() {
         P2P Transfer
       </h1>
 
-      {/* P2P Form */}
+      {/* Combined Card */}
       <Tilt
         glareEnable={true}
         glareMaxOpacity={0.2}
         scale={1.02}
         transitionSpeed={250}
-        tiltMaxAngleX={5}
-        tiltMaxAngleY={5}
-        className="w-full max-w-xl"
+        tiltMaxAngleX={3}
+        tiltMaxAngleY={3}
+        className="w-full max-w-7xl px-4"
       >
-        <div className="relative z-10 w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
-          <div className="rounded-[inherit] p-10 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
-            <h2 className="text-3xl font-semibold mb-6 text-white">
-              Send Money
-            </h2>
-            <hr className="mb-6 border-gray-700" />
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <label className="block text-lg font-medium text-gray-300 mb-2">
-                  Amount
-                </label>
-                <input
-                  type="text"
-                  placeholder="Amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-[#181F2A] text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition"
-                />
+        <div className="relative w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
+          <div className="rounded-[inherit] p-8 lg:p-12 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
+            <div className="flex flex-col lg:flex-row gap-10">
+              {/* Left: Form */}
+              <div className="flex-1">
+                <h2 className="text-3xl font-semibold mb-6 text-white">Send Money</h2>
+                <hr className="mb-6 border-gray-700" />
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                  <div>
+                    <label className="block text-lg font-medium text-gray-300 mb-2">Amount</label>
+                    <input
+                      type="text"
+                      placeholder="Amount"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-[#181F2A] text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-lg font-medium text-gray-300 mb-2">Phone Number</label>
+                    <input
+                      type="text"
+                      placeholder="Phone Number"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-[#181F2A] text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition"
+                    />
+                  </div>
+                  <div className="flex justify-center pt-2">
+                    <button
+                      type="submit"
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xl px-12 py-3 rounded-xl shadow-lg transition"
+                    >
+                      Pay
+                    </button>
+                  </div>
+                </form>
               </div>
-              <div>
-                <label className="block text-lg font-medium text-gray-300 mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-700 bg-[#181F2A] text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition"
-                />
-              </div>
-              <div className="flex justify-center pt-2">
-                <button
-                  type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xl px-12 py-3 rounded-xl shadow-lg transition"
-                >
-                  Pay
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </Tilt>
 
-      {/* Pie Chart */}
-      <Tilt
-        glareEnable={true}
-        glareMaxOpacity={0.2}
-        scale={1.02}
-        transitionSpeed={250}
-        tiltMaxAngleX={1}
-        tiltMaxAngleY={1}
-        className="w-full max-w-xl"
-      >
-        <div className="relative z-10 w-full max-w-4xl mt-12 p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
-          <div className="rounded-[inherit] p-6 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
-            <h2 className="text-white mb-4 text-xl font-semibold">
-              P2P Sent Distribution
-            </h2>
-            {sentSummary.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={sentSummary}
-                    dataKey="totalAmount"
-                    nameKey="receiver"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    label={({ name, percent }) =>
-                      `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
-                    }
-                  >
-                    {sentSummary.map((_, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <p className="text-sm text-slate-400">
-                No P2P transactions made yet.
-              </p>
-            )}
+              {/* Right: Pie Chart */}
+              <div className="flex-1">
+                <h2 className="text-white mb-4 text-xl font-semibold">P2P Sent Distribution</h2>
+                {sentSummary.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={sentSummary}
+                        dataKey="totalAmount"
+                        nameKey="receiver"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label={({ totalAmount }) => `₹${totalAmount}`}
+                      >
+                        {sentSummary.map((_, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip sentSummary={sentSummary} />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <p className="text-sm text-slate-400">No P2P transactions made yet.</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </Tilt>
