@@ -7,7 +7,7 @@ const particlesOptions: ISourceOptions = {
   detectRetina: true,
   particles: {
     number: {
-      value: 40,
+      value: 60,
       density: { enable: false },
     },
     color: {

@@ -167,12 +167,12 @@ export default function AccountDetails() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[#0A0F1F] text-white overflow-hidden px-4 py-8">
+    <div className="relative pb-4 pt-4 sm:pt-35 pl-4 sm:pl-18 pr-4 sm:pr-18 min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] overflow-hidden ">
       {isDesktop && (
         <Particles
           id="tsparticles"
           init={loadSlim}
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none "
           options={particlesOptions}
         />
       )}

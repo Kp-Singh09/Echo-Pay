@@ -13,7 +13,7 @@ export function HorizontalAppbar() {
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="w-full flex items-center justify-between px-8 py-3 shadow-2xl mb-2 bg-transparent pt-6"
+          className="w-full flex items-center justify-between px-8 py-3 shadow-2xl mb-2 bg-transparent pt-6 "
         >
           <div className="flex items-center h-16">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-70 w-auto" viewBox="0 0 1080 1080" preserveAspectRatio="xMidYMid meet">

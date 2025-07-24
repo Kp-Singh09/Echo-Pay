@@ -147,7 +147,7 @@ export default function P2P() {
   const handleClose = () => setOpen(false);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#0A0F1F] py-22 overflow-hidden">
+    <div className="relative min-h-screen pl-4 sm:pl-12 pr-4 sm:pr-12 flex flex-col items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] py-22 overflow-hidden">
       {!isMobile && (
         <Particles
           id="tsparticles"

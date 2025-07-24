@@ -147,7 +147,9 @@ export default function TopUp() {
   );
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#0A0F1F] py-22 overflow-hidden">
+    <div className="min-h-screen mt-2 sm:mt-0 bg-[#0A0F1F] text-white relative bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]"
+>
+    <div className=" min-h-screen flex flex-col items-center justify-center bg-[#0A0F1F] text-white relative bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] py-22 overflow-hidden">
       {showParticles && (
         <Particles
           id="tsparticles"
@@ -319,6 +321,7 @@ export default function TopUp() {
           {snackbarMsg}
         </Alert>
       </Snackbar>
+    </div>
     </div>
   );
 }

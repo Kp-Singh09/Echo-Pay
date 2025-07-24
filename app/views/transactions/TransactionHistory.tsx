@@ -66,20 +66,20 @@ export default function TransactionHistory() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0F1F]">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)]"></div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[#0A0F1F] px-4 py-12 text-white overflow-hidden">
+    <div className="pt-2 sm:pt-35 pl-4 sm:pl-18 pr-4 sm:pr-18 relative min-h-screen flex items-center justify-center bg-[#0A0F1F] bg-[length:80px_80px] bg-[linear-gradient(transparent_79px,#232733_80px),linear-gradient(90deg,transparent_79px,#232733_80px)] px-4 py-12 text-white overflow-hidden">
       {mounted && showParticles && (
         <Particles
           id="tsparticles"
           init={loadSlim}
           options={particlesOptions}
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none "
         />
       )}
 
@@ -87,13 +87,13 @@ export default function TransactionHistory() {
         glareEnable={true}
         glareMaxOpacity={0.2}
         scale={1}
-        tiltMaxAngleX={1}
-        tiltMaxAngleY={1}
+        tiltMaxAngleX={3}
+        tiltMaxAngleY={3}
         transitionSpeed={250}
-        className="w-full h-auto max-w-6xl z-10"
+        className="w-full h-auto max-w-6xl z-10 "
       >
-        <div className="w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">
-          <div className="rounded-[inherit] p-10 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
+        <div className="w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow ">
+          <div className="rounded-[inherit] p-10 pb-2 bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] shadow-[0_0_25px_#3B82F6] ring-2 ring-blue-500/10">
             <h1 className="text-4xl font-bold mb-10 text-center text-white drop-shadow-sm">
               Transactions History
             </h1>
