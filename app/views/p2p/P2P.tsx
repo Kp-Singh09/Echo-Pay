@@ -231,7 +231,7 @@ export default function P2P() {
                         cx="50%"
                         cy="50%"
                         outerRadius={100}
-                        label={({ totalAmount }) => `₹${totalAmount}`}
+                        label={!isMobile ? ({ totalAmount }) => `₹${totalAmount}` : undefined}
                       >
                         {sentSummary.map((_, index) => (
                           <Cell

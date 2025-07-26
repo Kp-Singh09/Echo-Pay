@@ -19,7 +19,7 @@
         <div className="bg-[#0A0F1F] min-h-screen">
           {/* Top Bar for Mobile */}
           <div className="md:hidden fixed top-0 left-0 w-full z-30 bg-[#101828] flex items-center justify-between px-4 py-3 shadow-lg border-b border-slate-800">
-            <div className="flex items-center gap-2">
+            <div className="w-full flex items-center ">
               <button
                 onClick={() => setShowMobileSidebar(true)}
                 className="p-2 rounded-md hover:bg-[#181F2A] focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -31,8 +31,8 @@
               </button>
 
 
-              <div className="pl-10 flex items-center h-16">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-60 w-auto" viewBox="0 0 1080 1080" preserveAspectRatio="xMidYMid meet">
+              <div className="flex items-center h-16 w-full ">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-60 w-full flex-items-center" viewBox="0 0 1080 1080" preserveAspectRatio="xMidYMid meet">
               <path fill="white" d="M219 438h8l5 5 1 3 10-1 5 3 6 14 5 14v2h12l2 2-1 4-1 1h-9l2 4 13 2 5 5 1 5v25l-2 4-5-1-1-1-1-29-23-1v36h31l6 2 4 4v44l-4 5-2 1h-35v46l24-1v-37l2-3 5 1 1 3v33l-2 7-3 3-3 1H78l-5-3-2-3V490l3-8 6-4 35-1 69-26Zm2 7-70 26-40 15-8 3v1h19l69-26 35-13-1-6Zm17 8-72 27-24 9v1h114l-3-10-10-26ZM82 485l-3 3v3l9-3 5-2v-1Zm-3 13-1 1v135l2 2h164v-46l-30-1-9-5-5-6-2-6v-20l4-8 7-6 9-3 26-1v-36Zm137 44-6 3-5 6-1 3v16l4 8 8 5h68l1-1v-39l-1-1Z"/>
               <path fill="white" d="M527 472h13l3 3 1 7 1 28 8-7 10-3h12l10 3 8 6 6 7 3 9 1 6v49l-2 4-2 1h-11l-5-2-1-2-1-46-3-10-4-4-3-1h-12l-8 4-4 5-2 7-2 46-3 3h-13l-4-3-1-14v-90l3-5Z"/>
               <path fill="#60a5fa" d="M719 473h47l12 3 8 4 8 7 5 10 2 13-1 11-6 12-7 7-8 5-6 2h-11l-6-1h-12l-7 1-1 5v17l1 6v8l-3 2h-14l-4-3V475Zm23 15-4 2-3 6v29l2 6 3 1h7l21-3 6-4 4-5 2-5v-11l-5-8-8-5-12-3Z"/>
