@@ -143,6 +143,19 @@ export default function P2P() {
     }
     setOpen(true);
   };
+const [showLabel, setShowLabel] = useState(false);
+
+useEffect(() => {
+  const checkLabelVisibility = () => {
+    const width = window.innerWidth;
+    setShowLabel((width >= 450 && width <= 767) || width >= 870);
+  };
+
+  checkLabelVisibility(); // Initial check
+  window.addEventListener("resize", checkLabelVisibility);
+
+  return () => window.removeEventListener("resize", checkLabelVisibility);
+}, []);
 
   const handleClose = () => setOpen(false);
 
@@ -231,7 +244,7 @@ export default function P2P() {
                         cx="50%"
                         cy="50%"
                         outerRadius={100}
-                        label={!isMobile ? ({ totalAmount }) => `₹${totalAmount}` : undefined}
+                        label={showLabel? ({ totalAmount }) => `₹${totalAmount}` : undefined}
                       >
                         {sentSummary.map((_, index) => (
                           <Cell
