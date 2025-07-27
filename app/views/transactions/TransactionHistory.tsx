@@ -107,7 +107,7 @@ export default function TransactionHistory() {
         : "bg-transparent text-slate-300 border-2 border-[#181F2A] hover:bg-[#181F2A]/40 transition"
     }`}
   >
-    Added Money
+    Bank Top-Ups
   </button>
 
   {/* Second row: Sent + Received */}
@@ -131,7 +131,7 @@ export default function TransactionHistory() {
 
             {/* Tab Contents */}
             {activeTab === "addedMoney" && (
-              <TransactionCard title="OnRamp Transactions" data={onRampTransactions} type="onRamp" />
+              <TransactionCard title="Bank Top-ups" data={onRampTransactions} type="onRamp" />
             )}
             {activeTab === "sent" && (
               <TransactionCard
