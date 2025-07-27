@@ -47,3 +47,21 @@ body {
   background-size: 200% 200%;
   animation: borderGlow 5s ease infinite;
 }
+
+
+
+@layer utilities {
+  .animate-shimmer {
+    background-size: 1000px 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+}
