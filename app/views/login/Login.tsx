@@ -79,14 +79,14 @@ export default function Login() {
               </h1>
             </div>
             <div className="space-y-6">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-blue-400/20">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-blue-400/20 [box-shadow:0_0_15px_1px_#204166]">
                 <p className="text-lg text-white italic mb-2">
                   "Digital payments are not just a convenience, they're a revolution in financial inclusion."
-                </p>
+                </p>  
                 <p className="text-blue-300 text-sm">- Financial Innovation</p>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-blue-400/20">
-                <p className="text-lg text-white italic mb-2">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-blue-400/20 [box-shadow:0_0_15px_1px_#204166]">
+                <p className="text-lg text-white italic mb-2 ">
                   "Every transaction is a step towards a more connected and empowered India."
                 </p>
                 <p className="text-blue-300 text-sm">- Digital India</p>
@@ -100,7 +100,7 @@ export default function Login() {
           <form
             onSubmit={handleSubmit}
             className="min-w-[320px] max-w-sm w-full p-8 rounded-2xl border border-blue-400/20 shadow-lg bg-white/10 backdrop-blur-lg flex flex-col gap-6"
-            style={{ boxShadow: "0 4px 32px 0 rgba(30,64,175,0.25)" }}
+            style={{ boxShadow: "0 0 25px 5px rgba(59, 130, 246, 0.5)" }}
           >
             <h2 className="text-2xl font-bold text-center text-white mb-2">Login / Signup</h2>
 
