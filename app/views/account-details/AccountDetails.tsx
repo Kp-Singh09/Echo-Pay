@@ -182,8 +182,8 @@ export default function AccountDetails() {
         glareMaxOpacity={0.2}
         scale={1.02}
         transitionSpeed={250}
-        tiltMaxAngleX={3}
-        tiltMaxAngleY={3}
+        tiltMaxAngleX={1}
+        tiltMaxAngleY={1}
         className="w-full max-w-5xl"
       >
         <div className="w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">

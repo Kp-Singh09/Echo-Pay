@@ -132,9 +132,9 @@ export default function Login() {
 
             <button
               type="submit"
-              className="bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white font-semibold rounded-full px-7 py-3 shadow-lg hover:shadow-blue-400/50 transition-all duration-200 ring-2 ring-blue-400/40 ring-offset-2 ring-offset-[#0A0F1F] mt-2"
+              className="self-center bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white font-semibold rounded-full px-8 py-3 shadow-lg hover:shadow-blue-400/50 transition-all duration-200 ring-2 ring-blue-400/40 ring-offset-2 ring-offset-[#0A0F1F] mt-2"
             >
-              Submit
+              Submit  
             </button>
           </form>
         </div>

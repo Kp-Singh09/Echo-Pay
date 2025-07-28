@@ -193,8 +193,8 @@ export default function TopUp() {
           glareMaxOpacity={0.2}
           scale={1.02}
           transitionSpeed={250}
-          tiltMaxAngleX={2}
-          tiltMaxAngleY={2}
+          tiltMaxAngleX={1}
+          tiltMaxAngleY={1}
           className="w-full max-w-xl"
         >
           <div className="relative z-10 w-full p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-fuchsia-600 to-pink-400 animate-borderGlow">

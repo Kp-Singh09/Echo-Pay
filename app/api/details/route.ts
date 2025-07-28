@@ -248,8 +248,8 @@ export async function POST(req: NextRequest) {
         case 'transactions':{
                 const { id } = dataBody;
                 const user = await User.findOne({ _id: id });
-                const onRampTransactions = await OnRampTransactions.find({ userId: id });
-                const p2pTransactions = await P2PTransfer.find({ $or: [{ sender: user.number }, { receiver: user.number }] });
+                const onRampTransactions = await OnRampTransactions.find({ userId: id }).sort({ timeStamp: -1 });
+                const p2pTransactions = await P2PTransfer.find({ $or: [{ sender: user.number }, { receiver: user.number }] }).sort({ timeStamp: -1 });
                 responseData = { message: 'Transactions fetched successfully', status: 200, data: { onRampTransactions: onRampTransactions, p2pTransactions: p2pTransactions } };   
                 return NextResponse.json(responseData);
                 break;

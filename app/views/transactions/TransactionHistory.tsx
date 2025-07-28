@@ -85,8 +85,8 @@ export default function TransactionHistory() {
         glareEnable
         glareMaxOpacity={0.2}
         scale={1}
-        tiltMaxAngleX={3}
-        tiltMaxAngleY={3}
+        tiltMaxAngleX={1}
+        tiltMaxAngleY={1}
         transitionSpeed={250}
         className="w-full max-w-6xl z-10"
       >
